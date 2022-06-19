@@ -5,12 +5,105 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>NFT Mint</title>
+    <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="application/javascript"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script src="https://unpkg.com/moralis/dist/moralis.js"></script>
+
 </head>
 
 <body>
 
 
+
+
+    <!-- Section 1 -->
+    <section class="w-full px-8 text-gray-700 bg-white">
+        <div class="container flex flex-col flex-wrap items-center justify-between py-5 mx-auto md:flex-row max-w-7xl">
+            <div class="relative flex flex-col md:flex-row">
+                <a href="#_"
+                    class="flex items-center mb-5 font-medium text-gray-900 lg:w-auto lg:items-center lg:justify-center md:mb-0">
+                    <span class="mx-auto text-xl font-black leading-none text-gray-900 select-none">NFT MINT<span
+                            class="text-indigo-600">.</span></span>
+                </a>
+                <nav
+                    class="flex flex-wrap items-center mb-5 text-base md:mb-0 md:pl-8 md:ml-8 md:border-l md:border-gray-200">
+                    <a href="#_" class="mr-5 font-medium leading-6 text-gray-600 hover:text-gray-900">Home</a>
+                    <a href="#_" class="mr-5 font-medium leading-6 text-gray-600 hover:text-gray-900">About</a>
+                    <a href="#_" class="mr-5 font-medium leading-6 text-gray-600 hover:text-gray-900">Contact</a>
+                </nav>
+            </div>
+
+            <div class="inline-flex items-center ml-5 space-x-6 lg:justify-end">
+                <button onClick="connectWallet();"
+                    class="inline-flex items-center justify-center px-4 py-2 text-base font-medium leading-6 text-white whitespace-no-wrap bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600"
+                    id="connect-wallet">Login With Metamask🦊</button>
+            </div>
+        </div>
+    </section>
+
+    <br />
+
+    <form class="w-full max-w-sm" method="POST" action="{% url 'home' %}">
+        {% csrf_token %}
+        <div class="md:flex md:items-center mb-6">
+            <div class="md:w-1/3">
+                <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" for="WalletAddress">
+                    WalletAddress
+                </label>
+            </div>
+            <div class="md:w-2/3">
+                <input name="WalletAddress"
+                    class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                    id="WalletAddress" type="text">
+            </div>
+        </div>
+        <div class="md:flex md:items-center mb-6">
+            <div class="md:w-1/3">
+                <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" for="imgurl">
+                    Image Url
+                </label>
+            </div>
+            <div class="md:w-2/3">
+                <input
+                    class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                    id="imgurl" name="imgurl" type="text" placeholder="">
+            </div>
+        </div>
+
+
+        <div class="md:flex md:items-center">
+            <div class="md:w-1/3"></div>
+            <div class="md:w-2/3">
+                <input type="submit"
+                    class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+                    value="Deploy ERC721" />
+            </div>
+        </div>
+    </form>
+
+
+
+
+
 </body>
+
+<script>
+
+
+    async function connectWallet() {
+        if (window.ethereum) {
+            console.log(window.ethereum);
+            const provider_t = new ethers.providers.Web3Provider(window.ethereum);
+            const signer_t = provider_t.getSigner(); const allWalletAccounts = await window.ethereum.request({
+                method: 'eth_requestAccounts'
+            });
+            console.log(allWalletAccounts);
+            document.getElementById('WalletAddress').value = ethers.utils.getAddress(allWalletAccounts[0]);  //checksum fix
+            document.getElementById('submit-button').click();
+        }
+    }
+</script>
 
 </html>
